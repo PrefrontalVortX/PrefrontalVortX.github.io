@@ -1,15 +1,17 @@
 :root {
-  --cream: #efe6d6;
-  --sand: #d9c8aa;
-  --tan: #b99b78;
-  --brown: #5d4433;
-  --deep-brown: #342820;
-  --olive: #777052;
-  --forest: #4f5138;
-  --moss: #928568;
-  --surface: #f7f1e7;
-  --muted: #70665c;
-  --line: rgba(93, 68, 51, 0.22);
+  --cream: #f0e6d2;
+  --sand: #d9c5a3;
+  --tan: #b99a70;
+  --brown: #5c4432;
+  --deep-brown: #30271f;
+
+  --olive: #746b45;
+  --forest: #47472f;
+  --moss: #918762;
+
+  --surface: #f8f2e7;
+  --muted: #655d52;
+  --line: rgba(72, 59, 43, 0.24);
 }
 
 * {
@@ -192,12 +194,12 @@ h1 {
 }
 
 .card:nth-child(3) {
-  background: #c5b990;
+  background: #d2c9a5;
 }
 
 .card h2 {
   margin: 0 0 14px;
-  color: var(--forest);
+  color: var(--deep-brown);
   font-size: 2rem;
   font-weight: 500;
 }
