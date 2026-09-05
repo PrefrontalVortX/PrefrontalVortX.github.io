@@ -429,3 +429,9 @@ footer {
     align-items: flex-start;
   }
 }
+.comments-disclaimer {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  opacity: 0.82;
+  margin-top: 2rem;
+}
