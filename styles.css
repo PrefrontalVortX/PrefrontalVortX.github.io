@@ -107,7 +107,7 @@ h1 {
 .subheading {
   margin: 0 auto;
   max-width: 1100px;
-  color: #5a5137;
+  color: var(--deep-brown);
   font-size: clamp(1.15rem, 2.1vw, 1.75rem);
   line-height: 1.5;
   white-space: nowrap;
@@ -117,7 +117,7 @@ h1 {
   display: inline-block;
   font-size: 0.9em;
   font-style: italic;
-  color: #5a5137;
+  color: var(--deep-brown);
 }
 
 /* WELCOME */
