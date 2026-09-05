@@ -5,9 +5,9 @@
   --brown: #5c4432;
   --deep-brown: #30271f;
 
-  --olive: #746b45;
-  --forest: #47472f;
-  --moss: #918762;
+  --olive: #756a47;
+  --forest: #5a5137;
+  --moss: #9a8d67;
 
   --surface: #f8f2e7;
   --muted: #655d52;
@@ -104,11 +104,10 @@ h1 {
   letter-spacing: -0.055em;
   line-height: 0.92;
 }
-
 .subheading {
   margin: 0 auto;
   max-width: 1100px;
-  color: var(--forest);
+  color: #5a5137;
   font-size: clamp(1.15rem, 2.1vw, 1.75rem);
   line-height: 1.5;
   white-space: nowrap;
@@ -118,7 +117,7 @@ h1 {
   display: inline-block;
   font-size: 0.9em;
   font-style: italic;
-  color: var(--brown);
+  color: #5a5137;
 }
 
 /* WELCOME */
@@ -194,7 +193,7 @@ h1 {
 }
 
 .card:nth-child(3) {
-  background: #d2c9a5;
+  background: #c8bd95;
 }
 
 .card h2 {
