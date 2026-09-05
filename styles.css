@@ -4,9 +4,9 @@
   --tan: #b99b78;
   --brown: #5d4433;
   --deep-brown: #342820;
-  --olive: #737a59;
-  --forest: #405342;
-  --moss: #909873;
+  --olive: #777052;
+  --forest: #4f5138;
+  --moss: #928568;
   --surface: #f7f1e7;
   --muted: #70665c;
   --line: rgba(93, 68, 51, 0.22);
@@ -105,10 +105,18 @@ h1 {
 
 .subheading {
   margin: 0 auto;
-  max-width: 850px;
+  max-width: 1100px;
   color: var(--forest);
-  font-size: clamp(1.35rem, 3vw, 2.15rem);
-  line-height: 1.35;
+  font-size: clamp(1.15rem, 2.1vw, 1.75rem);
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.subheading-second {
+  display: inline-block;
+  font-size: 0.9em;
+  font-style: italic;
+  color: var(--brown);
 }
 
 /* WELCOME */
@@ -264,4 +272,8 @@ footer {
   .footer-wrap {
     flex-direction: column;
   }
+  .subheading {
+  white-space: normal;
+  font-size: 1.15rem;
+}
 }
