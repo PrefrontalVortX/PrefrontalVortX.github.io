@@ -12,11 +12,10 @@
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="index.html">Prefrontal VortX</a>
-
       <nav aria-label="Main navigation">
         <a href="index.html#story">My Story</a>
         <a href="index.html#likes">Things I Like</a>
-        <a href="index.html#resources">Resource Library</a>
+        <a href="resources.html">Resource Library</a>
         <a href="index.html#vlog">Vlog</a>
         <a href="comments.html" aria-current="page">Comments</a>
       </nav>
@@ -42,9 +41,7 @@
 
           <p><strong>Rejection, judgment, and criticism hurt. We know this. Let’s do something different here.</strong></p>
 
-         <p class="comments-disclaimer" style="font-size: 14px !important; line-height: 1.55 !important; margin-top: 28px;">
-           <strong>One more thing:</strong> This is an open comment section, and I’m not planning to hover. Comments may appear publicly without being reviewed first. What others share here belongs to them and doesn’t necessarily reflect my own thoughts, beliefs, or recommendations. Please use your own judgment with anything you read here. I reserve the right to remove spam, harassment, hate speech, personal information, or anything else that clearly doesn’t belong in this space.
-         </p>
+          <p class="comments-disclaimer"> <strong>One more thing:</strong> This is an open comment section, and I’m not planning to hover over it. Comments may appear publicly without being reviewed first. What others share here belongs to them and doesn’t necessarily reflect my own thoughts, beliefs, or recommendations. Please use your own judgment with anything you read here. I reserve the right to remove spam, harassment, hate speech, personal information, or anything else that clearly doesn’t belong in this space.</p>
         </div>
 
         <div class="comment-form-wrap">
@@ -61,7 +58,6 @@
 
         <div id="comments-feed" class="comments-feed">
           <h2 class="feed-title">Comments</h2>
-
         </div>
       </div>
     </section>
@@ -70,114 +66,85 @@
   <footer>
     <div class="container footer-wrap">
       <strong>Prefrontal VortX</strong>
-      <a class="footer-comments-link" href="comments.html">Comments</a>
+      <span>A home for nuanced neurodivergent wandering.</span>
     </div>
   </footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-  const SUPABASE_URL = "https://cracfrzstxhvaxgdatqi.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_6CXy8x2pf1ez-UGUtxRBoA_rwc-av_V";
+    const SUPABASE_URL = "https://cracfrzstxhvaxgdatqi.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_6CXy8x2pf1ez-UGUtxRBoA_rwc-av_V";
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+    const nameInput = document.getElementById("comment-name");
+    const bodyInput = document.getElementById("comment-body");
+    const button = document.getElementById("comment-button");
+    const status = document.getElementById("form-status");
+    const feed = document.getElementById("comments-feed");
 
-  const nameInput = document.getElementById("comment-name");
-  const bodyInput = document.getElementById("comment-body");
-  const button = document.getElementById("comment-button");
-  const status = document.getElementById("form-status");
-  const feed = document.getElementById("comments-feed");
-
-  function escapeHTML(value) {
-    const div = document.createElement("div");
-    div.textContent = value;
-    return div.innerHTML;
-  }
-
-  function formatDate(value) {
-    return new Date(value).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    });
-  }
-
-  async function loadComments() {
-    const { data, error } = await db
-      .from("comments")
-      .select("id, name, body, created_at")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error(error);
-      feed.innerHTML = "<p>Comments could not load.</p>";
-      return;
+    function escapeHTML(value) {
+      const div = document.createElement("div");
+      div.textContent = value;
+      return div.innerHTML;
     }
 
-    if (!data || data.length === 0) {
-      feed.innerHTML = "<p>No comments yet.</p>";
-      return;
+    function formatDate(value) {
+      if (!value) return "";
+      return new Date(value).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
     }
 
-    feed.innerHTML = data.map(comment => `
-      <article class="comment-card">
-        <div class="comment-name">
-          ${escapeHTML(comment.name || "Anonymous")}
-        </div>
+    async function loadComments() {
+      const { data, error } = await db.from("comments").select("id, name, body, created_at").order("created_at", { ascending: false });
+      if (error) {
+        console.error(error);
+        feed.innerHTML = '<h2 class="feed-title">Comments</h2><p>Comments could not load.</p>';
+        return;
+      }
 
-        <div class="comment-body">
-          ${escapeHTML(comment.body)}
-        </div>
-
-        <div class="comment-date">
-          ${formatDate(comment.created_at)}
-        </div>
-      </article>
-    `).join("");
-  }
-
-  async function postComment() {
-    const name = nameInput.value.trim();
-    const body = bodyInput.value.trim();
-
-    if (!body) {
-      status.textContent = "Write something first.";
-      return;
+      feed.innerHTML = '<h2 class="feed-title">Comments</h2>' + (
+        !data || data.length === 0
+          ? '<p>No comments yet.</p>'
+          : data.map(comment => `
+            <article class="comment-card">
+              <div class="comment-name">${escapeHTML(comment.name || "Anonymous")}</div>
+              <div class="comment-body">${escapeHTML(comment.body)}</div>
+              <div class="comment-date">${formatDate(comment.created_at)}</div>
+            </article>
+          `).join("")
+      );
     }
 
-    button.disabled = true;
-    button.textContent = "Posting...";
-    status.textContent = "";
+    async function postComment() {
+      const name = nameInput.value.trim();
+      const body = bodyInput.value.trim();
 
-    const { error } = await db
-      .from("comments")
-      .insert({
-        name: name || null,
-        body: body
-      });
+      if (!body) {
+        status.textContent = "Write something first.";
+        return;
+      }
 
-    if (error) {
-      console.error(error);
-      status.textContent = "That did not post.";
+      button.disabled = true;
+      button.textContent = "Posting...";
+      status.textContent = "";
+
+      const { error } = await db.from("comments").insert({ name: name || null, body });
+
+      if (error) {
+        console.error(error);
+        status.textContent = "That did not post.";
+      } else {
+        nameInput.value = "";
+        bodyInput.value = "";
+        status.textContent = "Posted.";
+        await loadComments();
+      }
+
       button.disabled = false;
       button.textContent = "Post comment";
-      return;
     }
 
-    nameInput.value = "";
-    bodyInput.value = "";
-    status.textContent = "Posted.";
-
-    button.disabled = false;
-    button.textContent = "Post comment";
-
-    await loadComments();
-  }
-
-  button.addEventListener("click", postComment);
-
-  loadComments();
-</script>
+    button.addEventListener("click", postComment);
+    loadComments();
+  </script>
 </body>
 </html>
