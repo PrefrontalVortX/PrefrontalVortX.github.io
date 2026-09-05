@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comments | Prefrontal VortX</title>
+  <meta name="description" content="Leave a note on Prefrontal VortX." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html">Prefrontal VortX</a>
+
+      <nav aria-label="Main navigation">
+        <a href="index.html#story">My Story</a>
+        <a href="index.html#likes">Things I Like</a>
+        <a href="index.html#resources">Resource Library</a>
+        <a href="index.html#vlog">Vlog</a>
+        <a href="comments.html" aria-current="page">Comments</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="comments-page">
+      <div class="container narrow">
+        <div class="comments-heading">
+          <h1 class="comments-title">Hey you!</h1>
+          <p class="comments-subheading">Leave a note</p>
+        </div>
+
+        <div class="prose comments-copy">
+          <p>Feel like saying hi, sharing a meaningful story, venting, or just letting your fingers stumble across the letters on your keyboard and create literal nonsense for the sake of a good time? Feel free to comment below.</p>
+
+          <h2 class="request-heading">One small request:</h2>
+
+          <p>If you decide to comment something legible, I only ask that you please be kind and speak to your own experience. Unsolicited advice is not appropriate, as we cannot possibly know what’s best for anyone but ourselves.</p>
+
+          <p>It makes sense to feel anger or resentment. Those are human emotions. Please do not direct them toward any specific person or group.</p>
+
+          <p><strong>Rejection, judgment, and criticism hurt. We know this. Let’s do something different here.</strong></p>
+        </div>
+
+        <div class="comment-form-wrap">
+          <label for="comment-name" class="field-label">Name</label>
+          <p class="field-help">Optional. You can remain anonymous, share your real first name, or be whoever you want!</p>
+          <input id="comment-name" name="name" type="text" class="name-input" placeholder="Anonymous" maxlength="60" />
+
+          <label for="comment-body" class="field-label comment-label">Comment</label>
+          <textarea id="comment-body" name="comment" class="comment-input" placeholder="Type your note here..." maxlength="3000"></textarea>
+
+          <button id="comment-button" class="comment-button" type="button">Post comment</button>
+          <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="comments-feed">
+          <h2 class="feed-title">Comments</h2>
+
+          <article class="comment-card demo-comment">
+            <div class="comment-name">Anonymous</div>
+            <div class="comment-body">Published comments will appear here once we connect the page to the comment database.</div>
+            <div class="comment-date">Example</div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-wrap">
+      <strong>Prefrontal VortX</strong>
+      <a class="footer-comments-link" href="comments.html">Comments</a>
+    </div>
+  </footer>
+
+  <script>
+    const button = document.getElementById("comment-button");
+    const status = document.getElementById("form-status");
+
+    button.addEventListener("click", function () {
+      const body = document.getElementById("comment-body").value.trim();
+
+      if (!body) {
+        status.textContent = "Write something first, even if it is literal nonsense.";
+        return;
+      }
+
+      status.textContent = "The form is styled and ready. The next step is connecting the database so comments can publish publicly.";
+    });
+  </script>
+</body>
+</html>
