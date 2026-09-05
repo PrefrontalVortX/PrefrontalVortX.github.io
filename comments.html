@@ -89,6 +89,122 @@
 
       status.textContent = "The form is styled and ready. The next step is connecting the database so comments can publish publicly.";
     });
-  </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+  const SUPABASE_URL = "https://cracfrzstxhvaxgdatqi.supabase.co/rest/v1/";
+  const SUPABASE_KEY = "sb_publishable_6CXy8x2pf1ez-UGUtxRBoA_rwc-av_V";
+
+  const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  const nameInput = document.getElementById("comment-name");
+  const bodyInput = document.getElementById("comment-body");
+  const button = document.getElementById("comment-button");
+  const status = document.getElementById("form-status");
+  const feed = document.getElementById("comments-feed");
+
+  function escapeHTML(value) {
+    const div = document.createElement("div");
+    div.textContent = value;
+    return div.innerHTML;
+  }
+
+  function formatDate(value) {
+    return new Date(value).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  }
+
+  async function loadComments() {
+    const { data, error } = await db
+      .from("comments")
+      .select("id, name, body, created_at")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+      feed.innerHTML =
+        '<p>Comments are having a moment. Try refreshing the page.</p>';
+      return;
+    }
+
+    if (!data.length) {
+      feed.innerHTML =
+        '<p>No notes yet. You could be the first wandering brain here.</p>';
+      return;
+    }
+
+    feed.innerHTML = data.map(comment => `
+      <article class="comment-card">
+        <div class="comment-name">
+          ${escapeHTML(comment.name || "Anonymous")}
+        </div>
+
+        <div class="comment-body">
+          ${escapeHTML(comment.body)}
+        </div>
+
+        <div class="comment-date">
+          ${formatDate(comment.created_at)}
+        </div>
+      </article>
+    `).join("");
+  }
+
+  async function postComment() {
+    const name = nameInput.value.trim();
+    const body = bodyInput.value.trim();
+
+    if (!body) {
+      status.textContent =
+        "Write something first, even if it is literal nonsense.";
+      return;
+    }
+
+    if (body.length > 3000) {
+      status.textContent =
+        "That note is a little too long. Keep it under 3,000 characters.";
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Posting...";
+    status.textContent = "";
+
+    const { error } = await db
+      .from("comments")
+      .insert({
+        name: name || null,
+        body: body
+      });
+
+    if (error) {
+      console.error(error);
+      status.textContent =
+        "That didn't post. Try again in a moment.";
+      button.disabled = false;
+      button.textContent = "Post comment";
+      return;
+    }
+
+    nameInput.value = "";
+    bodyInput.value = "";
+
+    status.textContent = "Posted.";
+
+    button.disabled = false;
+    button.textContent = "Post comment";
+
+    await loadComments();
+  }
+
+  button.addEventListener("click", postComment);
+
+  loadComments();
+</script>
 </body>
 </html>
